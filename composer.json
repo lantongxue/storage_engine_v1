@@ -1,0 +1,21 @@
+{
+    "name": "v1/storage_engine",
+    "description": "V1存储引擎",
+    "type": "library",
+    "require": {
+        "php": ">=7.4.0",
+        "qcloud/cos-sdk-v5": "^2.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "kali",
+            "email": "863448246@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "V1\\StorageEngine\\" : "src/"
+        }
+    }
+}

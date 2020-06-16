@@ -38,6 +38,7 @@ class LocalEngine extends BaseEngine
         $bytes = fwrite($fp, $buffer->ToString());
         fclose($fp);
         $this->FileInfo->Trigger(FileInfo::EVENT_WRITE, ['bytes' => $bytes]);
+        unset($buffer);
         return $bytes;
     }
 
@@ -57,6 +58,7 @@ class LocalEngine extends BaseEngine
         fclose($fp);
         $newBytes = $this->FileInfo->Length + $bytes;
         $this->FileInfo->Trigger(FileInfo::EVENT_WRITE, ['bytes' => $newBytes]);
+        unset($buffer);
         return $bytes;
     }
 

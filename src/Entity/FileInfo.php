@@ -50,7 +50,10 @@ class FileInfo
         $this->File = $file;
         if($autoInitialization)
         {
-            $this->init($file);
+            /**
+             * 自动初始化的文件一定是一个存在且可以访问的文件
+             */
+            $this->init();
         }
         $this->On(self::EVENT_WRITE, $this->OnWrite());
         $this->On(self::EVENT_MOVED, $this->OnMoved());
@@ -67,7 +70,14 @@ class FileInfo
 
     public function init(string $root = '') : void
     {
-        $file = $root.'/'.$this->File;
+        if($root === '')
+        {
+            $file = $this->File;
+        }
+        else
+        {
+            $file = $root.'/'.$this->File;
+        }
         $info = pathinfo($file);
         $this->Name = $info['filename'];
         $this->Extend = $info['extension'];

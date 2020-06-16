@@ -14,12 +14,6 @@ class StreamBuffer
     public array $HexBuffer = [];
 
     /**
-     * 二进制字符串
-     * @var string
-     */
-    public string $BinaryText = '';
-
-    /**
      * 10进制流
      * @var array
      */
@@ -140,6 +134,5 @@ class StreamBuffer
     {
         unset($this->HexBuffer);
         unset($this->DecBuffer);
-        unset($this->BinaryText);
     }
 }

@@ -13,7 +13,7 @@ require_once dirname(__FILE__, 2).'/vendor/autoload.php';
 //     ]
 // );
 
-// $fileInfo = new \V1\StorageEngine\Entity\FileInfo('test.txt');
+// $fileInfo = new \V1\StorageEngine\Entity\FileInfo('test.txt', true);
 // $engine->AddFile($fileInfo);
 // $engine->Engine->ReadAsStreamBuffer();
 // $engine->Engine->WriteText('=>');
@@ -25,20 +25,23 @@ require_once dirname(__FILE__, 2).'/vendor/autoload.php';
 $engine = new \V1\StorageEngine\StorageEngine(
    \V1\StorageEngine\Engine\COSEngine::class,
    $options = [
-       'region' => 'ap-guangzhou',
+       'region' => '$region',
        'schema' => 'https',
-       'bucket' => 'sanyi-hubang-gd-1259744590', // required
-       'root' => '/v1/', // required
+       'bucket' => '$bucket', // required
+       'root' => '/', // required
        'credentials' => [
            'appId' => 123456,
-           'secretId'  => 'secretId',
-           'secretKey' => 'secretKey'
+           'secretId'  => '$secretId',
+           'secretKey' => '$secretKey'
        ]
    ]
 );
-$fileInfo = new \V1\StorageEngine\Entity\FileInfo('test2.txt');
+$fileInfo = new \V1\StorageEngine\Entity\FileInfo('test3.jpg');
 $engine->AddFile($fileInfo);
 $engine->Engine->ReadAsStreamBuffer();
+$engine->Engine->WriteText('nihao22');
+$engine->Engine->AppendStream(\V1\StorageEngine\Entity\StreamBuffer::FromFile(new \V1\StorageEngine\Entity\FileInfo('demo.jpg', true)));
+$engine->Engine->MoveTo('/aa.jpg');
 print_r($fileInfo);
 
 $m2 = memory_get_usage();

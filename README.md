@@ -6,7 +6,7 @@
 
 - [x] 本地存储 Local
 - [ ] 阿里云 OSS
-- [ ] 腾讯云 COS
+- [x] 腾讯云 COS
 - [ ] 华为云 OBS
 - [ ] 七牛云 KODO
 - [ ] 又拍云 USS

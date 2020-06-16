@@ -13,6 +13,12 @@
 
 > 仅支持`PHP 7.4.0`及以上版本
 
+# 安装 #Install
+使用`composer`快速安装
+```shell script
+composer require v1/storage_engine
+```
+
 # 文档 #Document
 先看demo里面的用法
 

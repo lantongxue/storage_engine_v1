@@ -22,27 +22,27 @@ require_once dirname(__FILE__, 2).'/vendor/autoload.php';
 // print_r($fileInfo);
 
 // COSEngine demo
-$engine = new \V1\StorageEngine\StorageEngine(
-   \V1\StorageEngine\Engine\COSEngine::class,
-   $options = [
-       'region' => '$region',
-       'schema' => 'https',
-       'bucket' => '$bucket', // required
-       'root' => '/', // required
-       'credentials' => [
-           'appId' => 123456,
-           'secretId'  => '$secretId',
-           'secretKey' => '$secretKey'
-       ]
-   ]
-);
-$fileInfo = new \V1\StorageEngine\Entity\FileInfo('test3.jpg');
-$engine->AddFile($fileInfo);
-$engine->Engine->ReadAsStreamBuffer();
-$engine->Engine->WriteText('nihao22');
-$engine->Engine->AppendStream(\V1\StorageEngine\Entity\StreamBuffer::FromFile(new \V1\StorageEngine\Entity\FileInfo('demo.jpg', true)));
-$engine->Engine->MoveTo('/aa.jpg');
-print_r($fileInfo);
+//$engine = new \V1\StorageEngine\StorageEngine(
+//   \V1\StorageEngine\Engine\COSEngine::class,
+//   $options = [
+//       'region' => '$region',
+//       'schema' => 'https',
+//       'bucket' => '$bucket', // required
+//       'root' => '/', // required
+//       'credentials' => [
+//           'appId' => 123456,
+//           'secretId'  => '$secretId',
+//           'secretKey' => '$secretKey'
+//       ]
+//   ]
+//);
+//$fileInfo = new \V1\StorageEngine\Entity\FileInfo('test3.jpg');
+//$engine->AddFile($fileInfo);
+//$engine->Engine->ReadAsStreamBuffer();
+//$engine->Engine->WriteText('nihao22');
+//$engine->Engine->AppendStream(\V1\StorageEngine\Entity\StreamBuffer::FromFile(new \V1\StorageEngine\Entity\FileInfo('demo.jpg', true)));
+//$engine->Engine->MoveTo('/aa.jpg');
+//print_r($fileInfo);
 
 $m2 = memory_get_usage();
 echo "before memory usage $m1 bytes \n";

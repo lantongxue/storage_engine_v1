@@ -8,6 +8,19 @@ namespace V1\StorageEngine;
 use V1\StorageEngine\Engine\BaseEngine;
 use V1\StorageEngine\Entity\FileInfo;
 
+/**
+ * Class StorageEngine
+ * @package V1\StorageEngine
+ * @method string ReadAsText()
+ * @method \V1\StorageEngine\Entity\StreamBuffer ReadAsStreamBuffer()
+ * @method int WriteText(string $content)
+ * @method int WriteStream(\V1\StorageEngine\Entity\StreamBuffer $buffer)
+ * @method int AppendText(string $content)
+ * @method int AppendStream(\V1\StorageEngine\Entity\StreamBuffer $buffer)
+ * @method bool CopyTo(string $target)
+ * @method bool MoveTo(string $target)
+ * @method bool Delete()
+ */
 class StorageEngine
 {
     /**
@@ -83,5 +96,17 @@ class StorageEngine
     {
         $this->Engine->AddFile($fileInfo);
         return $this;
+    }
+
+    public function __call($name, $arguments)
+    {
+        if(method_exists($this->Engine, $name))
+        {
+            return call_user_func_array([$this->Engine, $name], $arguments);
+        }
+        else
+        {
+            throw new \Exception("Call undefined method {$name}", 500);
+        }
     }
 }

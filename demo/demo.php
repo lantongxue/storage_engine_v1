@@ -15,10 +15,10 @@ require_once dirname(__FILE__, 2).'/vendor/autoload.php';
 
 // $fileInfo = new \V1\StorageEngine\Entity\FileInfo('test.txt', true);
 // $engine->AddFile($fileInfo);
-// $engine->Engine->ReadAsStreamBuffer();
-// $engine->Engine->WriteText('=>');
-// $engine->Engine->AppendStream(new \V1\StorageEngine\Entity\StreamBuffer([], ['74', '76']));
-// $engine->Engine->AppendText('你好');
+// $engine->ReadAsStreamBuffer();
+// $engine->WriteText('=>');
+// $engine->AppendStream(new \V1\StorageEngine\Entity\StreamBuffer([], ['74', '76']));
+// $engine->AppendText('你好');
 // print_r($fileInfo);
 
 // COSEngine demo
@@ -38,10 +38,10 @@ require_once dirname(__FILE__, 2).'/vendor/autoload.php';
 //);
 //$fileInfo = new \V1\StorageEngine\Entity\FileInfo('test3.jpg');
 //$engine->AddFile($fileInfo);
-//$engine->Engine->ReadAsStreamBuffer();
-//$engine->Engine->WriteText('nihao22');
-//$engine->Engine->AppendStream(\V1\StorageEngine\Entity\StreamBuffer::FromFile(new \V1\StorageEngine\Entity\FileInfo('demo.jpg', true)));
-//$engine->Engine->MoveTo('/aa.jpg');
+//$engine->ReadAsStreamBuffer();
+//$engine->WriteText('nihao22');
+//$engine->AppendStream(\V1\StorageEngine\Entity\StreamBuffer::FromFile(new \V1\StorageEngine\Entity\FileInfo('demo.jpg', true)));
+//$engine->MoveTo('/aa.jpg');
 //print_r($fileInfo);
 
 $m2 = memory_get_usage();

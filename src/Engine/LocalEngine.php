@@ -14,6 +14,16 @@ use V1\StorageEngine\Entity\StreamBuffer;
  */
 class LocalEngine extends BaseEngine
 {
+    private function check_file_dir(string $file) : string
+    {
+        $dir = pathinfo($file, PATHINFO_DIRNAME);
+        if(!file_exists($dir))
+        {
+            mkdir($dir, 0777, true);
+        }
+        return $file;
+    }
+
     public function ReadAsText(): string
     {
         return file_get_contents($this->FileInfo->FullName);
@@ -26,7 +36,7 @@ class LocalEngine extends BaseEngine
 
     public function WriteText(string $content): int
     {
-        $bytes = file_put_contents($this->FileInfo->FullName, $content);
+        $bytes = file_put_contents($this->check_file_dir($this->FileInfo->FullName), $content);
         $bytes = $bytes === false ? 0 : $bytes;
         $this->FileInfo->Trigger(FileInfo::EVENT_WRITE, ['bytes' => $bytes]);
         return $bytes;
@@ -34,7 +44,7 @@ class LocalEngine extends BaseEngine
 
     public function WriteStream(StreamBuffer $buffer): int
     {
-        $fp = fopen($this->FileInfo->FullName, 'wb');
+        $fp = fopen($this->check_file_dir($this->FileInfo->FullName), 'wb');
         $bytes = fwrite($fp, $buffer->ToString());
         fclose($fp);
         $this->FileInfo->Trigger(FileInfo::EVENT_WRITE, ['bytes' => $bytes]);
@@ -44,7 +54,7 @@ class LocalEngine extends BaseEngine
 
     public function AppendText(string $content): int
     {
-        $bytes = file_put_contents($this->FileInfo->FullName, $content, FILE_APPEND);
+        $bytes = file_put_contents($this->check_file_dir($this->FileInfo->FullName), $content, FILE_APPEND);
         $bytes = $bytes === false ? 0 : $bytes;
         $newBytes = $this->FileInfo->Length + $bytes;
         $this->FileInfo->Trigger(FileInfo::EVENT_WRITE, ['bytes' => $newBytes]);
@@ -53,7 +63,7 @@ class LocalEngine extends BaseEngine
 
     public function AppendStream(StreamBuffer $buffer): int
     {
-        $fp = fopen($this->FileInfo->FullName, 'ab');
+        $fp = fopen($this->check_file_dir($this->FileInfo->FullName), 'ab');
         $bytes = fwrite($fp, $buffer->ToString());
         fclose($fp);
         $newBytes = $this->FileInfo->Length + $bytes;
@@ -64,7 +74,7 @@ class LocalEngine extends BaseEngine
 
     public function CopyTo(string $target): bool
     {
-        return copy($this->FileInfo->FullName, $target);
+        return copy($this->FileInfo->FullName, $this->check_file_dir($this->Root.'/'.$target));
     }
 
     public function MoveTo(string $target): bool

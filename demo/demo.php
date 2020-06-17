@@ -13,13 +13,13 @@ require_once dirname(__FILE__, 2).'/vendor/autoload.php';
 // ]
 //);
 //
-//$fileInfo = new \V1\StorageEngine\Entity\FileInfo('test.txt', true);
+//$fileInfo = new \V1\StorageEngine\Entity\FileInfo('aa/bb/test.txt', true);
 //$engine->AddFile($fileInfo);
-//$engine->ReadAsStreamBuffer();
 //$engine->WriteText('=>');
 //$engine->AppendStream(new \V1\StorageEngine\Entity\StreamBuffer([], ['74', '76']));
 //$engine->AppendText('你好');
-//print_r($fileInfo);
+//$engine->CopyTo('cc/aa.txt');
+//$engine->ReadAsStreamBuffer();
 
 // COSEngine demo
 //$engine = new \V1\StorageEngine\StorageEngine(

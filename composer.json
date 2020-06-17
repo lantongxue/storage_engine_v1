@@ -5,7 +5,8 @@
     "version": "v0.0.1-alpha1",
     "require": {
         "php": ">=7.4.0",
-        "qcloud/cos-sdk-v5": "^2.0"
+        "qcloud/cos-sdk-v5": "^2.0",
+        "ext-ftp": "*"
     },
     "license": "MIT",
     "authors": [

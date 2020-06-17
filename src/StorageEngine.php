@@ -6,6 +6,9 @@ namespace V1\StorageEngine;
 
 
 use V1\StorageEngine\Engine\BaseEngine;
+use V1\StorageEngine\Engine\FTPEngine;
+use V1\StorageEngine\Engine\LocalEngine;
+use V1\StorageEngine\Engine\QCloudCOSEngine;
 use V1\StorageEngine\Entity\FileInfo;
 
 /**
@@ -30,7 +33,13 @@ class StorageEngine
      * ]
      * @var array
      */
-    private array $EnginePool = [];
+    private array $EngineObjectPool = [];
+
+    private static array $EnginePool = [
+        'LocalEngine' => LocalEngine::class,
+        'QCloudCOSEngine' => QCloudCOSEngine::class,
+        'FTPEngine' => FTPEngine::class
+    ];
 
     /**
      * 当前所使引擎
@@ -51,7 +60,25 @@ class StorageEngine
      */
     public static function Make(string $engine, array $options = []) : BaseEngine
     {
-        return new $engine($options);
+        $engineObject = new $engine($options);
+        if(!$engineObject instanceof BaseEngine)
+        {
+            throw new \Exception("$engine dose not inherit BaseEngine");
+        }
+        return $engineObject;
+    }
+
+    /**
+     * 注册引擎
+     * @param string $name
+     * @param string $engine 引擎 class
+     */
+    public static function RegEngine(string $name, string $engine)
+    {
+        if(!array_key_exists($name, self::$EnginePool))
+        {
+            self::$EnginePool[$name] = $engine;
+        }
     }
 
     /**
@@ -68,14 +95,19 @@ class StorageEngine
          */
         $oldEngine = $this->Engine ?? null;
 
-        if(array_key_exists($engine, $this->EnginePool))
+        if(array_key_exists($engine, $this->EngineObjectPool))
         {
-            $this->Engine = $this->EnginePool[$engine];
+            $this->Engine = $this->EngineObjectPool[$engine];
         }
         else
         {
-            $this->Engine = self::Make($engine, $options);
-            $this->EnginePool[$engine] = $this->Engine;
+            $engineClass = self::$EnginePool[$engine] ?? false;
+            if($engineClass === false)
+            {
+                throw new \Exception("$engine unregistered");
+            }
+            $this->Engine = self::Make($engineClass, $options);
+            $this->EngineObjectPool[$engine] = $this->Engine;
         }
 
         // 把上一个引擎的部分数据继承下去

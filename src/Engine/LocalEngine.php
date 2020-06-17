@@ -70,7 +70,7 @@ class LocalEngine extends BaseEngine
     public function MoveTo(string $target): bool
     {
         $result = $this->CopyTo($target) && $this->Delete();
-        $this->FileInfo->Trigger(FileInfo::EVENT_MOVED, ['target' => $target]);
+        $this->FileInfo->Trigger(FileInfo::EVENT_MOVED, ['target' => $target, 'root' => $this->Root]);
         return $result;
     }
 

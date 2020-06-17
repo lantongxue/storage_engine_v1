@@ -8,7 +8,12 @@ use Qcloud\Cos\Client;
 use V1\StorageEngine\Entity\StreamBuffer;
 use V1\StorageEngine\Entity\FileInfo;
 
-class COSEngine extends BaseEngine
+/**
+ * 腾讯云COS
+ * Class COSEngine
+ * @package V1\StorageEngine\Engine
+ */
+class QCloudCOSEngine extends BaseEngine
 {
     public Client $Client;
 
@@ -158,7 +163,7 @@ class COSEngine extends BaseEngine
     public function MoveTo(string $target): bool
     {
         $result = $this->CopyTo($target) && $this->Delete();
-        $this->FileInfo->Trigger(FileInfo::EVENT_MOVED, ['target' => $target]);
+        $this->FileInfo->Trigger(FileInfo::EVENT_MOVED, ['target' => $target, 'root' => $this->Root]);
         return $result;
     }
 

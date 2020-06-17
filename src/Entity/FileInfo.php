@@ -12,8 +12,8 @@ class FileInfo
     use BaseEvent;
 
     /**
-     * 文件名字（不带扩展名字）
-     * @var mixed|string
+     * 文件名字
+     * @var string
      */
     public string $Name;
 
@@ -40,6 +40,24 @@ class FileInfo
      * @var string
      */
     public string $File;
+
+    /**
+     * 路径
+     * @var string
+     */
+    public string $Path;
+
+    /**
+     * 文件名（不带扩展名字）
+     * @var string
+     */
+    public string $BaseName;
+
+    /**
+     * 是否存在
+     * @var bool
+     */
+    public bool $Exists = false;
 
     const EVENT_WRITE = 'FileInfo::OnWrite';
 
@@ -79,10 +97,12 @@ class FileInfo
             $file = $root.'/'.$this->File;
         }
         $info = pathinfo($file);
-        $this->Name = $info['filename'];
+        $this->Path = $info['dirname'];
+        $this->Name = $info['basename'];
+        $this->BaseName = $info['filename'];
         $this->Extend = $info['extension'];
-
-        if(!file_exists($file))
+        $this->Exists = file_exists($file);
+        if(!$this->Exists)
         {
             $this->Length = 0;
             $this->FullName = $file;
@@ -98,13 +118,15 @@ class FileInfo
     {
         return function (array $params, EventHandler $event) {
             $this->Length = $params['bytes'];
+            $this->Exists = true;
         };
     }
 
     public function OnMoved()
     {
         return function (array $params, EventHandler $event) {
-            $this->init($params['target']);
+            $this->File = $params['target'];
+            $this->init($params['root']);
         };
     }
 

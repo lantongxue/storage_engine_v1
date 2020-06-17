@@ -18,7 +18,7 @@ abstract class BaseEngine implements IEngine
     /**
      * 存储引擎根路径
      * @required
-     * @var mixed|string
+     * @var string
      */
     protected string $Root;
 

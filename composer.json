@@ -2,7 +2,7 @@
     "name": "v1/storage_engine",
     "description": "V1存储引擎",
     "type": "library",
-    "version": "v0.0.1-alpha1",
+    "version": "v0.2.2-alpha",
     "require": {
         "php": ">=7.4.0",
         "qcloud/cos-sdk-v5": "^2.0",

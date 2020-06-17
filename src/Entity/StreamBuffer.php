@@ -51,15 +51,15 @@ class StreamBuffer
     public static function FromFile(FileInfo $fileInfo) : StreamBuffer
     {
         $object = new self;
-        if($fileInfo->Length === 0)
+        if(!$fileInfo->Exists)
         {
             return $object;
         }
         $fp = fopen($fileInfo->FullName, 'rb');
-        $object->BinaryText = fread($fp, $fileInfo->Length);
+        $BinaryText = fread($fp, $fileInfo->Length);
         fclose($fp);
 
-        $object->DecBuffer = unpack('C*', $object->BinaryText);
+        $object->DecBuffer = unpack('C*', $BinaryText);
         $object->HexBuffer = $object->ConvertToHexBuffer($object->DecBuffer);
         return $object;
     }

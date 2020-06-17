@@ -22,6 +22,10 @@ composer require v1/storage_engine
 # 文档 #Document
 先看demo里面的用法
 
+# 已知问题以及解决办法 #Questions
+**问题一：中文乱码，如何解决？**
+>答：目前中文乱码问题仅在使用FTP引擎时有出现，解决办法就是提前将中文转换为GBK编码。
+
 # 引擎适配情况 #Project Planning
 
 - [x] 本地存储 Local
@@ -35,7 +39,7 @@ composer require v1/storage_engine
 - [ ] UCloud UFile
 - [ ] Amazon S3
 - [ ] Azure Blobs
-- [ ] FTP Server
+- [x] FTP Server
 
 # 开源协议 #License
 MIT

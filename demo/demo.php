@@ -25,14 +25,14 @@ require_once dirname(__FILE__, 2).'/vendor/autoload.php';
 //$engine = new \V1\StorageEngine\StorageEngine(
 //   'QCloudCOSEngine',
 //   $options = [
-//       'region' => '$region',
+//       'region' => '$region', // required
 //       'schema' => 'https',
 //       'bucket' => '$bucket', // required
 //       'root' => '/', // required
 //       'credentials' => [
 //           'appId' => 123456,
-//           'secretId'  => '$secretId',
-//           'secretKey' => '$secretKey'
+//           'secretId'  => '$secretId', // required
+//           'secretKey' => '$secretKey' // required
 //       ]
 //   ]
 //);

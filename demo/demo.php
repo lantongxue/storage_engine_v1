@@ -68,6 +68,25 @@ require_once dirname(__FILE__, 2).'/vendor/autoload.php';
 //$engine->AppendText('555555555');
 //$engine->CopyTo('bb/aa.jpg'); // copy /123/456/555/777/666.txt to /123/456/bb/aa.jpg
 
+// AliyunOSSEngine demo
+//$engine = new \V1\StorageEngine\StorageEngine(
+//   'AliyunOSSEngine',
+//   $options = [
+//       'root' => '/', // required
+//       'bucket' => 'bucket', // required
+//       'accessKeyId' => 'accessKeyId', // required
+//       'accessKeySecret' => 'accessKeySecret', // required
+//       'endPoint' => 'endPoint' // required
+//   ]
+//);
+//$fileInfo = new \V1\StorageEngine\Entity\FileInfo('abc/test3.jpg');
+//$engine->AddFile($fileInfo);
+////$engine->ReadAsStreamBuffer();
+//$engine->WriteText('nihao22');
+//$engine->AppendStream(\V1\StorageEngine\Entity\StreamBuffer::FromFile(new \V1\StorageEngine\Entity\FileInfo('demo.jpg', true)));
+//$engine->MoveTo('/aa.jpg');
+//print_r($fileInfo);
+
 $m2 = memory_get_usage();
 echo "before memory usage $m1 bytes \n";
 echo "after memory usage $m2 bytes \n";

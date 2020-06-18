@@ -6,7 +6,8 @@
     "require": {
         "php": ">=7.4.0",
         "qcloud/cos-sdk-v5": "^2.0",
-        "ext-ftp": "*"
+        "ext-ftp": "*",
+        "aliyuncs/oss-sdk-php": "^2.3"
     },
     "license": "MIT",
     "authors": [

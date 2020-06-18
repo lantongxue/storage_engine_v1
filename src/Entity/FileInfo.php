@@ -6,6 +6,7 @@ namespace V1\StorageEngine\Entity;
 
 use V1\StorageEngine\Event\BaseEvent;
 use V1\StorageEngine\Event\EventHandler;
+use V1\StorageEngine\Util\PathUtil;
 
 class FileInfo
 {
@@ -94,7 +95,7 @@ class FileInfo
         }
         else
         {
-            $file = $root.'/'.$this->File;
+            $file = PathUtil::RealPath($root.'/'.$this->File);
         }
         $info = pathinfo($file);
         $this->Path = $info['dirname'];

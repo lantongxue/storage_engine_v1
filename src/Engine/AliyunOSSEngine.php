@@ -4,34 +4,27 @@
 namespace V1\StorageEngine\Engine;
 
 
-use Qcloud\Cos\Client;
-use V1\StorageEngine\Entity\StreamBuffer;
+use OSS\OssClient;
 use V1\StorageEngine\Entity\FileInfo;
+use V1\StorageEngine\Entity\StreamBuffer;
+use V1\StorageEngine\Util\PathUtil;
 
-/**
- * 腾讯云COS
- * Class COSEngine
- * @package V1\StorageEngine\Engine
- */
-class QCloudCOSEngine extends BaseEngine
+class AliyunOSSEngine extends BaseEngine
 {
-    public Client $Client;
+    protected OssClient $ossClient;
 
     protected string $Bucket;
-
-    protected string $Region;
 
     protected function init()
     {
         $this->Bucket = $this->options['bucket'];
-        $this->Region = $this->options['region'];
-        $this->Client = new Client($this->options);
+        $this->ossClient = new OssClient($this->options['accessKeyId'], $this->options['accessKeySecret'], $this->options['endPoint']);
     }
 
     public function AddFile(FileInfo $fileInfo): BaseEngine
     {
         parent::AddFile($fileInfo);
-        $this->FileInfo->FullName = Client::explodeKey($this->FileInfo->FullName);
+        $this->FileInfo->FullName = PathUtil::explodeKey($this->FileInfo->FullName);
         return $this;
     }
 
@@ -40,10 +33,8 @@ class QCloudCOSEngine extends BaseEngine
         // 创建一个空白的临时文件到系统临时目录
         $localPath = tempnam(sys_get_temp_dir(), '_SE');
         try {
-            $this->Client->getObject([
-                'Bucket' => $this->Bucket,
-                'Key' => $this->FileInfo->FullName,
-                'SaveAs' => $localPath
+            $this->ossClient->getObject($this->Bucket, $this->FileInfo->FullName, [
+                OssClient::OSS_FILE_DOWNLOAD => $localPath
             ]);
             return $localPath;
         }
@@ -72,11 +63,7 @@ class QCloudCOSEngine extends BaseEngine
 
     public function WriteText(string $content): int
     {
-        $this->Client->putObject([
-            'Bucket' => $this->Bucket,
-            'Key' => $this->FileInfo->FullName,
-            'Body' => $content
-        ]);
+        $this->ossClient->putObject($this->Bucket, $this->FileInfo->FullName, $content);
         $bytes = strlen($content);
         $this->FileInfo->Trigger(FileInfo::EVENT_WRITE, ['bytes' => $bytes]);
         unset($content);
@@ -86,11 +73,7 @@ class QCloudCOSEngine extends BaseEngine
     public function WriteStream(StreamBuffer $buffer): int
     {
         $binaryText = $buffer->ToString();
-        $this->Client->putObject([
-            'Bucket' => $this->Bucket,
-            'Key' => $this->FileInfo->FullName,
-            'Body' => $binaryText
-        ]);
+        $this->ossClient->putObject($this->Bucket, $this->FileInfo->FullName, $binaryText);
         $bytes = strlen($binaryText);
         $this->FileInfo->Trigger(FileInfo::EVENT_WRITE, ['bytes' => $bytes]);
         unset($buffer);
@@ -100,15 +83,10 @@ class QCloudCOSEngine extends BaseEngine
 
     public function AppendText(string $content): int
     {
-        try
-        {
-            $text = $this->ReadAsText().$content;
-            $this->Client->putObject([
-                'Bucket' => $this->Bucket,
-                'Key' => $this->FileInfo->FullName,
-                'Body' => $text
-            ]);
-            $bytes = strlen($text);
+        try {
+            $content = $this->ReadAsText().$content;
+            $this->ossClient->putObject($this->Bucket, $this->FileInfo->FullName, $content);
+            $bytes = strlen($content);
             $this->FileInfo->Trigger(FileInfo::EVENT_WRITE, ['bytes' => $bytes]);
             unset($content);
             return $bytes;
@@ -121,20 +99,15 @@ class QCloudCOSEngine extends BaseEngine
 
     public function AppendStream(StreamBuffer $buffer): int
     {
-        try
-        {
-            $steamBuffer = $this->ReadAsStreamBuffer();
-            $steamBuffer->AppendHex($buffer->HexBuffer);
-            $binaryText = $steamBuffer->ToString();
-            $this->Client->putObject([
-                'Bucket' => $this->Bucket,
-                'Key' => $this->FileInfo->FullName,
-                'Body' => $binaryText
-            ]);
+        try {
+            $streamBuffer = $this->ReadAsStreamBuffer();
+            $streamBuffer->AppendHex($buffer->HexBuffer);
+            $binaryText = $streamBuffer->ToString();
+            $this->ossClient->putObject($this->Bucket, $this->FileInfo->FullName, $binaryText);
             $bytes = strlen($binaryText);
             $this->FileInfo->Trigger(FileInfo::EVENT_WRITE, ['bytes' => $bytes]);
-            unset($steamBuffer);
             unset($buffer);
+            unset($streamBuffer);
             unset($binaryText);
             return $bytes;
         }
@@ -148,11 +121,7 @@ class QCloudCOSEngine extends BaseEngine
     {
         try
         {
-            $this->Client->copy($this->Bucket, Client::explodeKey($this->Root.'/'.$target), [
-                'Region' => $this->Region,
-                'Bucket' => $this->Bucket,
-                'Key' => $this->FileInfo->FullName,
-            ]);
+            $this->ossClient->copyObject($this->Bucket, $this->FileInfo->FullName, $this->Bucket, PathUtil::explodeKey($this->Root.'/'.$target));
             return true;
         }
         catch (\Exception $exception)
@@ -172,10 +141,7 @@ class QCloudCOSEngine extends BaseEngine
     {
         try
         {
-            $this->Client->deleteObject([
-                'Bucket' => $this->Bucket,
-                'Key' => $this->FileInfo->FullName
-            ]);
+            $this->ossClient->deleteObject($this->Bucket, $this->FileInfo->FullName);
             return true;
         }
         catch (\Exception $exception)

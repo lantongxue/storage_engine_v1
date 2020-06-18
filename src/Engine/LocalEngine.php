@@ -39,6 +39,7 @@ class LocalEngine extends BaseEngine
         $bytes = file_put_contents($this->check_file_dir($this->FileInfo->FullName), $content);
         $bytes = $bytes === false ? 0 : $bytes;
         $this->FileInfo->Trigger(FileInfo::EVENT_WRITE, ['bytes' => $bytes]);
+        unset($content);
         return $bytes;
     }
 
@@ -58,6 +59,7 @@ class LocalEngine extends BaseEngine
         $bytes = $bytes === false ? 0 : $bytes;
         $newBytes = $this->FileInfo->Length + $bytes;
         $this->FileInfo->Trigger(FileInfo::EVENT_WRITE, ['bytes' => $newBytes]);
+        unset($content);
         return $bytes;
     }
 

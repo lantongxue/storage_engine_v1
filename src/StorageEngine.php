@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace V1\StorageEngine;
 
 
+use V1\StorageEngine\Engine\AliyunOSSEngine;
 use V1\StorageEngine\Engine\BaseEngine;
 use V1\StorageEngine\Engine\FTPEngine;
 use V1\StorageEngine\Engine\LocalEngine;
@@ -38,7 +39,8 @@ class StorageEngine
     private static array $EnginePool = [
         'LocalEngine' => LocalEngine::class,
         'QCloudCOSEngine' => QCloudCOSEngine::class,
-        'FTPEngine' => FTPEngine::class
+        'FTPEngine' => FTPEngine::class,
+        'AliyunOSSEngine' => AliyunOSSEngine::class
     ];
 
     /**

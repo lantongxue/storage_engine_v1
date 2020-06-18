@@ -31,7 +31,7 @@ composer require v1/storage_engine
 - [x] 本地存储 Local
 - [x] 阿里云 OSS
 - [x] 腾讯云 COS
-- [ ] 华为云 OBS
+- [x] 华为云 OBS
 - [ ] 七牛云 KODO
 - [ ] 又拍云 USS
 - [ ] 京东云 OSS

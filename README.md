@@ -29,7 +29,7 @@ composer require v1/storage_engine
 # 引擎适配情况 #Project Planning
 
 - [x] 本地存储 Local
-- [ ] 阿里云 OSS
+- [x] 阿里云 OSS
 - [x] 腾讯云 COS
 - [ ] 华为云 OBS
 - [ ] 七牛云 KODO

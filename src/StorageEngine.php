@@ -115,7 +115,10 @@ class StorageEngine
         // 把上一个引擎的部分数据继承下去
         if($inherit && $oldEngine instanceof BaseEngine)
         {
-            $this->Engine->FileInfo = $oldEngine->FileInfo;
+            if($oldEngine->FileInfo)
+            {
+                $this->Engine->FileInfo = $oldEngine->FileInfo;
+            }
         }
 
         return $this;
